@@ -10,14 +10,14 @@ public class Main {
 
         while(true) {
             System.out.println("Выберите операцию:");
-            System.out.println("1. Добавить\n2. Показать\n3. Удалить");
+            System.out.println("1. Добавить\n2. Показать\n3. Удалить\n4. Найти");
 
-            String numOperation = scanner.next();
+            String numOperation = scanner.nextLine();
 
             switch (numOperation) {
                 case ("1") : {
                     System.out.println("Какую покупку хотите добавить?");
-                    String product = scanner.next();
+                    String product = scanner.nextLine();
                     products.add(product);
                     System.out.println("Добавлено \"" + product + "\". Итого в списке покупок: " + products.size() + "\n");
                     break;
@@ -33,19 +33,51 @@ public class Main {
                     show(products);
                     if (!products.isEmpty()) {
                         System.out.println("Какую хотите удалить? Введите номер или название");
-                        String numberOrProduct = scanner.next();
+                        String numberOrProduct = scanner.nextLine();
                         if (checkType(numberOrProduct)) {
                             String str = products.get(Integer.parseInt(numberOrProduct) - 1);
                             products.remove(Integer.parseInt(numberOrProduct) - 1);
-                            System.out.print("Покупка " + str + " удалена. ");
+                            System.out.print("Покупка \"" + str + "\" удалена. ");
                         } else {
-                            products.remove(numberOrProduct);
-                            System.out.print("Покупка " + numberOrProduct + " удалена. ");
+                            boolean flag = true;
+                            String queryLower = numberOrProduct.toLowerCase(); // Текст запроса, приведенный к нижнему регистру
+                            for (String item : products) {
+                                String itemLower = item.toLowerCase(); // Название покупки, приведенное к нижнему регистру
+                                if (queryLower.equals(itemLower)) {
+                                    products.remove(item);
+                                    System.out.print("Покупка \"" + item + "\" удалена. ");
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                            if (flag) System.out.print("Покупка \"" + numberOrProduct + "\" не удалена. ");
                         }
                         show(products);
                         System.out.println();
                         break;
                     }
+                    System.out.println();
+                    break;
+                }
+
+                case ("4") : {
+                    if (products.isEmpty()) {
+                        System.out.println("Список покупок пуст!\n");
+                        break;
+                    }
+                    System.out.println("Введите текст для поиска:");
+                    String findProduct = scanner.nextLine();
+                    boolean flag = true;
+                    String queryLower = findProduct.toLowerCase(); // Текст запроса, приведенный к нижнему регистру
+                    for (int i = 0; i < products.size(); i++) {
+                        String itemLower = products.get(i).toLowerCase(); // Название покупки, приведенное к нижнему регистру
+                        if (itemLower.contains(queryLower)) {
+                            if (flag) System.out.println("Найдено:");
+                            System.out.println(i + 1 + ". " + products.get(i));
+                            flag = false;
+                        }
+                    }
+                    if (flag) System.out.println("По Вашему запросу ничего не найдено!");
                     System.out.println();
                     break;
                 }
