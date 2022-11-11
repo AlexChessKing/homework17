@@ -35,9 +35,14 @@ public class Main {
                         System.out.println("Какую хотите удалить? Введите номер или название");
                         String numberOrProduct = scanner.nextLine();
                         if (checkType(numberOrProduct)) {
-                            String str = products.get(Integer.parseInt(numberOrProduct) - 1);
-                            products.remove(Integer.parseInt(numberOrProduct) - 1);
-                            System.out.print("Покупка \"" + str + "\" удалена. ");
+                            int number = Integer.parseInt(numberOrProduct);
+                            if (number > 0 & number <= products.size()) {
+                                String str = products.get(number - 1);
+                                products.remove(number - 1);
+                                System.out.print("Покупка \"" + str + "\" удалена. ");
+                            } else {
+                                System.out.println("Номер вне диапазона продуктов!");
+                            }
                         } else {
                             boolean flag = true;
                             String queryLower = numberOrProduct.toLowerCase(); // Текст запроса, приведенный к нижнему регистру
